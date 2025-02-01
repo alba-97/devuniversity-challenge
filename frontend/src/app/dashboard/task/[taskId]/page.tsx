@@ -72,12 +72,16 @@ export default function TaskDetailPage() {
   };
 
   if (isLoading) {
-    return <div className="text-center mt-10">{t("common.loading")}</div>;
+    return (
+      <div data-testid="task-loading" className="text-center mt-10">
+        {t("common.loading")}
+      </div>
+    );
   }
 
   if (error) {
     return (
-      <div className="text-center mt-10 text-red-500">
+      <div className="text-center mt-10 text-red-500" data-testid="task-error">
         {error}
         <button
           onClick={() => router.push("/dashboard")}
@@ -94,10 +98,16 @@ export default function TaskDetailPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 bg-gray-50 dark:bg-gray-900 min-h-screen">
+    <div
+      className="container mx-auto px-4 py-8 bg-gray-50 dark:bg-gray-900 min-h-screen"
+      data-testid="task-detail"
+    >
       <div className="max-w-2xl mx-auto bg-white dark:bg-gray-800 shadow-md rounded-lg p-6 mt-8">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+          <h1
+            data-testid="task-title"
+            className="text-2xl font-bold text-gray-900 dark:text-gray-100"
+          >
             {task.title}
           </h1>
           <button
@@ -108,7 +118,7 @@ export default function TaskDetailPage() {
           </button>
         </div>
 
-        <div className="mb-4">
+        <div data-testid="task-description" className="mb-4">
           <p className="text-gray-700 dark:text-gray-300">{task.description}</p>
         </div>
 
@@ -121,6 +131,7 @@ export default function TaskDetailPage() {
               value={task.status}
               onChange={(e) => handleUpdateStatus(e.target.value as TaskStatus)}
               className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 dark:bg-gray-700 dark:text-gray-100"
+              data-testid="task-status"
             >
               {Object.values(TaskStatus).map((status) => (
                 <option key={status} value={status}>

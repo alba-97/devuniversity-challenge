@@ -16,9 +16,13 @@ export const authenticateToken = (
   res: Response,
   next: NextFunction
 ) => {
+  // Log all cookies for debugging
+  console.log('Received cookies:', req.cookies);
+
   const token = req.cookies.token;
 
   if (!token) {
+    console.log('No token found in cookies');
     return res.status(401).json({ message: "No token provided" });
   }
 
@@ -31,6 +35,7 @@ export const authenticateToken = (
     req.user = { id: decoded.userId };
     next();
   } catch (error) {
+    console.log('Token verification error:', error);
     res.status(401).json({
       message: "Invalid or expired token",
       error: error instanceof Error ? error.message : "Unknown error",
