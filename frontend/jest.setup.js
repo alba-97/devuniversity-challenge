@@ -1,17 +1,16 @@
-import '@testing-library/jest-dom';
-import { TextEncoder, TextDecoder } from 'util';
+import "@testing-library/jest-dom";
+import { TextEncoder, TextDecoder } from "util";
 
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
 
-// Mock Next.js router
-jest.mock('next/router', () => ({
+jest.mock("next/router", () => ({
   useRouter() {
     return {
-      route: '/',
-      pathname: '',
+      route: "/",
+      pathname: "",
       query: {},
-      asPath: '',
+      asPath: "",
       push: jest.fn(),
       replace: jest.fn(),
       reload: jest.fn(),
@@ -23,19 +22,18 @@ jest.mock('next/router', () => ({
         on: jest.fn(),
         off: jest.fn(),
         emit: jest.fn(),
-      }
+      },
     };
   },
 }));
 
-// Mock Next.js navigation
-jest.mock('next/navigation', () => ({
+jest.mock("next/navigation", () => ({
   useRouter() {
     return {
-      route: '/',
-      pathname: '',
+      route: "/",
+      pathname: "",
       query: {},
-      asPath: '',
+      asPath: "",
       push: jest.fn(),
       replace: jest.fn(),
       reload: jest.fn(),
@@ -51,12 +49,11 @@ jest.mock('next/navigation', () => ({
     };
   },
   usePathname() {
-    return '/';
+    return "/";
   },
 }));
 
-// Mock AuthContext
-jest.mock('@/context/AuthContext', () => ({
+jest.mock("@/context/AuthContext", () => ({
   useAuth: () => ({
     user: null,
     isAuthenticated: false,
@@ -68,8 +65,7 @@ jest.mock('@/context/AuthContext', () => ({
   AuthProvider: ({ children }) => children,
 }));
 
-// Mock AuthService
-jest.mock('@/services/AuthService', () => ({
+jest.mock("@/services/AuthService", () => ({
   AuthService: {
     login: jest.fn(),
     register: jest.fn(),
@@ -78,8 +74,7 @@ jest.mock('@/services/AuthService', () => ({
   },
 }));
 
-// Mock TaskService
-jest.mock('@/services/TaskService', () => ({
+jest.mock("@/services/TaskService", () => ({
   TaskService: {
     getTasks: jest.fn(),
     createTask: jest.fn(),
@@ -88,5 +83,4 @@ jest.mock('@/services/TaskService', () => ({
   },
 }));
 
-// Silence console errors during testing
 console.error = jest.fn();

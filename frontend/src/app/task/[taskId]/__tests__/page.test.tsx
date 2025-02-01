@@ -88,14 +88,11 @@ describe("TaskDetailPage", () => {
     updatedAt: new Date(),
     user: mockUser.id,
     subtasks: [],
-    dependencies: [],
   };
 
   beforeEach(() => {
-    // Reset mocks
     jest.clearAllMocks();
 
-    // Mock task service
     (TaskService.getTaskById as jest.Mock).mockResolvedValue(mockTask);
   });
 
@@ -104,7 +101,6 @@ describe("TaskDetailPage", () => {
       render(<TaskDetailPage />);
     });
 
-    // Check if task components are rendered
     await waitFor(() => {
       expect(screen.getByTestId("task-title")).toBeInTheDocument();
       expect(screen.getByTestId("task-description")).toBeInTheDocument();
@@ -113,7 +109,6 @@ describe("TaskDetailPage", () => {
   });
 
   it("handles task fetching error", async () => {
-    // Mock error scenario
     (TaskService.getTaskById as jest.Mock).mockRejectedValue(
       new Error("Failed to fetch task")
     );
@@ -126,7 +121,6 @@ describe("TaskDetailPage", () => {
       render(<TaskDetailPage />);
     });
 
-    // Check if error is logged
     await waitFor(() => {
       expect(screen.getByTestId("task-error")).toBeInTheDocument();
     });
@@ -139,14 +133,12 @@ describe("TaskDetailPage", () => {
       render(<TaskDetailPage />);
     });
 
-    // Verify task service was called with correct taskId
     await waitFor(() => {
       expect(TaskService.getTaskById).toHaveBeenCalledWith("1");
     });
   });
 
   it("renders loading state initially", async () => {
-    // Create a promise that doesn't resolve immediately to simulate loading
     const slowTaskFetch = new Promise<Task>(() => {});
     (TaskService.getTaskById as jest.Mock).mockImplementation(
       () => slowTaskFetch
@@ -156,7 +148,6 @@ describe("TaskDetailPage", () => {
       render(<TaskDetailPage />);
     });
 
-    // Check for loading indicator
     await waitFor(() => {
       expect(screen.getByTestId("task-loading")).toBeInTheDocument();
     });

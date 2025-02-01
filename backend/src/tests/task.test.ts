@@ -27,11 +27,9 @@ describe("Task API", () => {
   });
 
   beforeEach(async () => {
-    // Clear existing data
     await User.deleteMany({});
     await Task.deleteMany({});
 
-    // Create a test user and get authentication token
     const testUser = {
       username: "taskuser",
       email: "task@example.com",
@@ -48,9 +46,7 @@ describe("Task API", () => {
       })
       .expect(200);
 
-    // Extract the cookie from the login response
     authCookie = loginResponse.headers["set-cookie"];
-    console.log(111111111111, authCookie);
     userId = loginResponse.body.userId;
   });
 
@@ -110,7 +106,6 @@ describe("Task API", () => {
 
   describe("GET /api/tasks", () => {
     it("should retrieve tasks for authenticated user", async () => {
-      // Create some test tasks
       const tasks = [
         {
           title: "Task 1",
@@ -267,7 +262,6 @@ describe("Task API", () => {
 
       expect(response.statusCode).toBe(200);
 
-      // Verify task is deleted
       const deletedTask = await Task.findById(task._id);
       expect(deletedTask).toBeNull();
     });

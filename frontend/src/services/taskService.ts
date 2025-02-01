@@ -93,6 +93,15 @@ export const TaskService = {
     }
   },
 
+  async createSubtask(taskId: string, subtaskData: TaskCreateDTO): Promise<Task> {
+    try {
+      const response = await api.post<Task>(`/tasks/${taskId}/subtask`, subtaskData);
+      return response.data;
+    } catch (error: any) {
+      throw error.response?.data || new Error("Failed to create subtask");
+    }
+  },
+
   async addTaskDependency(
     taskId: string,
     dependencyData: {

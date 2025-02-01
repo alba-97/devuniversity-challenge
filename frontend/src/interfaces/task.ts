@@ -14,21 +14,6 @@ export enum TaskPriority {
   CRITICAL = "critical",
 }
 
-export interface Subtask {
-  id: string;
-  title: string;
-  completed: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface TaskDependency {
-  id: string;
-  dependentTaskId: string;
-  blockedByTaskId: string;
-  type: "BLOCKS" | "DEPENDS_ON";
-}
-
 export interface Task {
   _id: string;
   title: string;
@@ -36,8 +21,8 @@ export interface Task {
   status: TaskStatus;
   priority: TaskPriority;
   user: string;
-  subtasks: Subtask[];
-  dependencies: TaskDependency[];
+  subtasks: Task[];
+  parent?: Task;
   estimatedHours?: number;
   tags?: string[];
   createdAt: Date;
@@ -49,10 +34,8 @@ export interface TaskCreateDTO {
   description?: string;
   status: TaskStatus;
   priority: TaskPriority;
-  subtasks?: Omit<Subtask, "id" | "createdAt" | "updatedAt">[];
-  dependencies?: Omit<TaskDependency, "id">[];
-  estimatedHours?: number;
-  tags?: string[];
+  parent?: string;
+  subtasks?: Omit<TaskCreateDTO, "parent">[];
 }
 
 export interface TaskUpdateDTO {
@@ -60,8 +43,6 @@ export interface TaskUpdateDTO {
   description?: string;
   status?: TaskStatus;
   priority?: TaskPriority;
-  subtasks?: Subtask[];
-  dependencies?: TaskDependency[];
-  estimatedHours?: number;
-  tags?: string[];
+  parent?: string | null;
+  subtasks?: Omit<TaskCreateDTO, "parent">[];
 }

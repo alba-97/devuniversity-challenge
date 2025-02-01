@@ -4,7 +4,8 @@ import {
   getTasks, 
   updateTask, 
   deleteTask,
-  getTaskById 
+  getTaskById,
+  createSubtask 
 } from "../controllers/taskController";
 import { 
   authenticateToken 
@@ -157,5 +158,48 @@ router.put("/:id", authenticateToken, validateTaskUpdate, updateTask);
  *         description: Task not found
  */
 router.delete("/:id", authenticateToken, deleteTask);
+
+/**
+ * @swagger
+ * /api/tasks/{id}/subtask:
+ *   post:
+ *     summary: Create a subtask for a specific parent task
+ *     tags: [Tasks]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               status:
+ *                 type: string
+ *                 enum: ['pending', 'in-progress', 'completed']
+ *               priority:
+ *                 type: string
+ *                 enum: ['low', 'medium', 'high']
+ *     responses:
+ *       201:
+ *         description: Subtask created successfully
+ *       400:
+ *         description: Invalid input
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Parent task not found
+ */
+router.post("/:id/subtask", authenticateToken, validateTaskCreation, createSubtask);
 
 export default router;

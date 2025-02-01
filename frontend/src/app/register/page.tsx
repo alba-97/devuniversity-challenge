@@ -19,10 +19,8 @@ export default function RegisterPage() {
   const { register, isLoading } = useAuth();
   const router = useRouter();
 
-  // Detect and set language on component mount
   useLanguageEffect();
 
-  // If translations are not ready, return loading state
   if (!isTranslationReady) {
     return <div>Loading...</div>;
   }

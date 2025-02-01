@@ -9,7 +9,12 @@
   "task": {
     "createdAt": "Created at",
     "updatedAt": "Updated at",
-    "backToDashboard": "Back to Dashboard"
+    "backToDashboard": "Back to Dashboard",
+    "childTasks": "Subtasks",
+    "noChildTasks": "No subtasks yet",
+    "addChildTask": "Add Subtask",
+    "cancelAddChildTask": "Cancel",
+    "createChildTask": "Create Subtask"
   },
   "taskCreation": {
     "title": "Create New Task",
@@ -17,7 +22,9 @@
     "description": "Description",
     "priority": "Priority",
     "status": "Status",
-    "createButton": "Create Task"
+    "createButton": "Create Task",
+    "titlePlaceholder": "Enter subtask title",
+    "descriptionPlaceholder": "Enter subtask description (optional)"
   },
   "taskList": {
     "summary": "Task Summary",

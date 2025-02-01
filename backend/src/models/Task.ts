@@ -17,11 +17,14 @@ export enum TaskPriority {
 }
 
 export interface ITask extends Document {
+  _id: Types.ObjectId;
   title: string;
   description?: string;
   status: TaskStatus;
   priority: TaskPriority;
   user: Types.ObjectId;
+  parent?: Types.ObjectId;
+  subtasks?: Types.ObjectId[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -55,6 +58,17 @@ const TaskSchema: Schema = new Schema(
       ref: "User",
       required: [true, "Task must belong to a user"],
     },
+    parent: {
+      type: Schema.Types.ObjectId,
+      ref: "Task",
+      nullable: true,
+    },
+    subtasks: [
+      {
+        type: Types.ObjectId,
+        ref: 'Task'
+      },
+    ],
   },
   {
     timestamps: true,

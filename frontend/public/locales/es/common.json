@@ -9,7 +9,12 @@
   "task": {
     "createdAt": "Creado el",
     "updatedAt": "Actualizado el",
-    "backToDashboard": "Volver al Panel de Control"
+    "backToDashboard": "Volver al Panel de Control",
+    "childTasks": "Subtareas",
+    "noChildTasks": "No hay subtareas",
+    "addChildTask": "Agregar Subtarea",
+    "cancelAddChildTask": "Cancelar",
+    "createChildTask": "Crear Subtarea"
   },
   "taskCreation": {
     "title": "Crear Nueva Tarea",
@@ -17,7 +22,9 @@
     "description": "Descripción",
     "priority": "Prioridad",
     "status": "Estado",
-    "createButton": "Crear Tarea"
+    "createButton": "Crear Tarea",
+    "titlePlaceholder": "Ingresa el título de la tarea",
+    "descriptionPlaceholder": "Ingresa la descripción de la tarea (opcional)"
   },
   "taskList": {
     "summary": "Resumen de Tareas",

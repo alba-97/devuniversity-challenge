@@ -13,6 +13,15 @@ export default function TaskDetailPage() {
   const [task, setTask] = useState<Task | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isAddingChildTask, setIsAddingChildTask] = useState(false);
+  const [childTaskTitle, setChildTaskTitle] = useState("");
+  const [childTaskDescription, setChildTaskDescription] = useState("");
+  const [childTaskStatus, setChildTaskStatus] = useState<TaskStatus>(
+    TaskStatus.TODO
+  );
+  const [childTaskPriority, setChildTaskPriority] = useState<TaskPriority>(
+    TaskPriority.LOW
+  );
 
   useEffect(() => {
     const fetchTask = async () => {
@@ -68,6 +77,30 @@ export default function TaskDetailPage() {
       router.push("/dashboard");
     } catch (err) {
       console.error("Failed to delete task", err);
+    }
+  };
+
+  const handleCreateChildTask = async () => {
+    if (!task) return;
+
+    try {
+      await TaskService.createSubtask(task._id, {
+        title: childTaskTitle,
+        description: childTaskDescription,
+        status: childTaskStatus,
+        priority: childTaskPriority,
+      });
+
+      const updatedTask = await TaskService.getTaskById(task._id);
+      setTask(updatedTask);
+
+      setChildTaskTitle("");
+      setChildTaskDescription("");
+      setChildTaskStatus(TaskStatus.TODO);
+      setChildTaskPriority(TaskPriority.LOW);
+      setIsAddingChildTask(false);
+    } catch (err) {
+      console.error("Failed to create child task", err);
     }
   };
 
@@ -143,7 +176,7 @@ export default function TaskDetailPage() {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-              {t("task.priority")}
+              {t("taskCreation.priority")}
             </label>
             <select
               value={task.priority}
@@ -179,6 +212,131 @@ export default function TaskDetailPage() {
           >
             {t("task.backToDashboard")}
           </button>
+        </div>
+
+        <div className="mt-6">
+          <h2 className="text-xl font-semibold mb-4">{t("task.childTasks")}</h2>
+
+          {task?.subtasks && task.subtasks.length > 0 ? (
+            <div className="space-y-2">
+              {task.subtasks.map((subtask: Task) => (
+                <div
+                  key={subtask._id}
+                  className="bg-white dark:bg-gray-700 p-3 rounded-md shadow-sm flex justify-between items-center"
+                >
+                  <div>
+                    <h3 className="font-medium">{subtask.title}</h3>
+                    <p className="text-sm text-gray-500 dark:text-gray-300">
+                      {subtask.description}
+                    </p>
+                  </div>
+                  <span
+                    className={`
+                    px-2 py-1 rounded text-xs 
+                    ${
+                      subtask.status === TaskStatus.DONE
+                        ? "bg-green-100 text-green-800"
+                        : "bg-yellow-100 text-yellow-800"
+                    }
+                  `}
+                  >
+                    {subtask.status}
+                  </span>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-500 dark:text-gray-400">
+              {t("task.noChildTasks")}
+            </p>
+          )}
+
+          <button
+            onClick={() => setIsAddingChildTask(!isAddingChildTask)}
+            className="mt-4 w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
+          >
+            {isAddingChildTask
+              ? t("task.cancelAddChildTask")
+              : t("task.addChildTask")}
+          </button>
+
+          {isAddingChildTask && (
+            <div className="mt-4 bg-white dark:bg-gray-800 p-4 rounded-md shadow-md">
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  {t("taskCreation.title")}
+                </label>
+                <input
+                  type="text"
+                  value={childTaskTitle}
+                  onChange={(e) => setChildTaskTitle(e.target.value)}
+                  className="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:text-gray-100"
+                  placeholder={t("taskCreation.titlePlaceholder")}
+                />
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  {t("taskCreation.description")}
+                </label>
+                <textarea
+                  value={childTaskDescription}
+                  onChange={(e) => setChildTaskDescription(e.target.value)}
+                  className="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:text-gray-100"
+                  placeholder={t("taskCreation.descriptionPlaceholder")}
+                  rows={3}
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4 mb-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    {t("taskCreation.status")}
+                  </label>
+                  <select
+                    value={childTaskStatus}
+                    onChange={(e) =>
+                      setChildTaskStatus(e.target.value as TaskStatus)
+                    }
+                    className="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:text-gray-100"
+                  >
+                    {Object.values(TaskStatus).map((status) => (
+                      <option key={status} value={status}>
+                        {status}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    {t("taskCreation.priority")}
+                  </label>
+                  <select
+                    value={childTaskPriority}
+                    onChange={(e) =>
+                      setChildTaskPriority(e.target.value as TaskPriority)
+                    }
+                    className="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:text-gray-100"
+                  >
+                    {Object.values(TaskPriority).map((priority) => (
+                      <option key={priority} value={priority}>
+                        {priority}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <button
+                onClick={handleCreateChildTask}
+                disabled={!childTaskTitle}
+                className="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
+              >
+                {t("task.createChildTask")}
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

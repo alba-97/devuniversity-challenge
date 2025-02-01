@@ -2,7 +2,6 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 import DashboardPage from "../page";
 import { TaskService } from "@/services/taskService";
-import { User } from "@/interfaces/auth";
 import { Task, TaskPriority, TaskStatus } from "@/interfaces/task";
 
 jest.mock("@/context/AuthContext", () => ({
@@ -75,12 +74,6 @@ jest.mock("@/components/ThemeToggle", () => {
 });
 
 describe("DashboardPage", () => {
-  const mockUser: User = {
-    id: "1",
-    username: "testuser",
-    email: "test@example.com",
-  };
-
   const mockTasks: Task[] = [
     {
       _id: "1",
@@ -92,7 +85,6 @@ describe("DashboardPage", () => {
       updatedAt: new Date(),
       user: "1",
       subtasks: [],
-      dependencies: [],
     },
     {
       _id: "2",
@@ -104,15 +96,12 @@ describe("DashboardPage", () => {
       updatedAt: new Date(),
       user: "1",
       subtasks: [],
-      dependencies: [],
     },
   ];
 
   beforeEach(() => {
-    // Reset mocks
     jest.clearAllMocks();
 
-    // Mock task service
     (TaskService.getTasks as jest.Mock).mockResolvedValue(mockTasks);
   });
 
@@ -121,7 +110,6 @@ describe("DashboardPage", () => {
       render(<DashboardPage />);
     });
 
-    // Check if task titles are rendered
     await waitFor(() => {
       expect(screen.getByText("Test Task 1")).toBeInTheDocument();
       expect(screen.getByText("Test Task 2")).toBeInTheDocument();
@@ -133,7 +121,6 @@ describe("DashboardPage", () => {
       render(<DashboardPage />);
     });
 
-    // Check for task creation form
     await waitFor(() => {
       expect(screen.getByTestId("task-creation-form")).toBeInTheDocument();
       expect(screen.getByText("Title")).toBeInTheDocument();
@@ -143,7 +130,6 @@ describe("DashboardPage", () => {
   });
 
   it("handles task fetching error", async () => {
-    // Mock error scenario
     (TaskService.getTasks as jest.Mock).mockRejectedValue(
       new Error("Fetch error")
     );
@@ -156,7 +142,6 @@ describe("DashboardPage", () => {
       render(<DashboardPage />);
     });
 
-    // Check if error is logged
     await waitFor(() => {
       expect(consoleSpy).toHaveBeenCalledWith(
         "Failed to fetch tasks",

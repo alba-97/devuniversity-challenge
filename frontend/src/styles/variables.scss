@@ -1,8 +1,6 @@
-// Color Palette
 $color-white: #ffffff;
 $color-black: #000000;
 
-// Grayscale
 $color-gray-50: #f9fafb;
 $color-gray-100: #f3f4f6;
 $color-gray-200: #e5e7eb;
@@ -14,7 +12,6 @@ $color-gray-700: #374151;
 $color-gray-800: #1f2937;
 $color-gray-900: #111827;
 
-// Blue Shades
 $color-blue-50: #eff6ff;
 $color-blue-100: #dbeafe;
 $color-blue-200: #bfdbfe;
@@ -26,7 +23,6 @@ $color-blue-700: #1d4ed8;
 $color-blue-800: #1e40af;
 $color-blue-900: #1e3a8a;
 
-// Green Shades
 $color-green-50: #ecfdf5;
 $color-green-100: #d1fae5;
 $color-green-200: #a7f3d0;
@@ -38,7 +34,6 @@ $color-green-700: #047857;
 $color-green-800: #065f46;
 $color-green-900: #064e3b;
 
-// Red Shades
 $color-red-50: #fef2f2;
 $color-red-100: #fee2e2;
 $color-red-200: #fecaca;
@@ -50,38 +45,36 @@ $color-red-700: #b91c1c;
 $color-red-800: #991b1b;
 $color-red-900: #7f1d1d;
 
-// Typography
-$font-size-xs: 0.75rem;     // 12px
-$font-size-sm: 0.875rem;    // 14px
-$font-size-base: 1rem;      // 16px
-$font-size-lg: 1.125rem;    // 18px
-$font-size-xl: 1.25rem;     // 20px
-$font-size-2xl: 1.5rem;     // 24px
-$font-size-3xl: 1.875rem;   // 30px
-$font-size-4xl: 2.25rem;    // 36px
+$font-size-xs: 0.75rem;
+$font-size-sm: 0.875rem;
+$font-size-base: 1rem;
+$font-size-lg: 1.125rem;
+$font-size-xl: 1.25rem;
+$font-size-2xl: 1.5rem;
+$font-size-3xl: 1.875rem;
+$font-size-4xl: 2.25rem;
 
-// Spacing
-$spacing-xs: 0.25rem;       // 4px
-$spacing-sm: 0.5rem;        // 8px
-$spacing-md: 1rem;          // 16px
-$spacing-lg: 1.5rem;        // 24px
-$spacing-xl: 2rem;          // 32px
-$spacing-2xl: 3rem;         // 48px
+$spacing-xs: 0.25rem;
+$spacing-sm: 0.5rem;
+$spacing-md: 1rem;
+$spacing-lg: 1.5rem;
+$spacing-xl: 2rem;
+$spacing-2xl: 3rem;
 
-// Border Radius
-$border-radius-sm: 0.25rem;   // 4px
-$border-radius-md: 0.5rem;    // 8px
-$border-radius-lg: 0.75rem;   // 12px
-$border-radius-xl: 1rem;      // 16px
+$border-radius-sm: 0.25rem;
+$border-radius-md: 0.5rem;
+$border-radius-lg: 0.75rem;
+$border-radius-xl: 1rem;
 $border-radius-full: 9999px;
 
-// Shadows
 $shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-$shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+  0 2px 4px -1px rgba(0, 0, 0, 0.06);
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+  0 4px 6px -2px rgba(0, 0, 0, 0.05);
+$shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+  0 10px 10px -5px rgba(0, 0, 0, 0.04);
 
-// Breakpoints
 $breakpoint-xs: 480px;
 $breakpoint-sm: 640px;
 $breakpoint-md: 768px;
@@ -89,7 +82,6 @@ $breakpoint-lg: 1024px;
 $breakpoint-xl: 1280px;
 $breakpoint-2xl: 1536px;
 
-// Transitions
 $transition-fast: 0.2s ease-in-out;
 $transition-normal: 0.3s ease-in-out;
 $transition-slow: 0.5s ease-in-out;

@@ -1,15 +1,15 @@
 module.exports = {
   i18n: {
-    defaultLocale: 'en',
-    locales: ['en'],
+    defaultLocale: "en",
+    locales: ["en"],
   },
-  localePath: typeof window === 'undefined'
-    ? require('path').resolve('./public/locales')
-    : '/locales',
-  reloadOnPrerender: process.env.NODE_ENV === 'development',
-  
-  // Explicitly configure backend for App Router
+  localePath:
+    typeof window === "undefined"
+      ? require("path").resolve("./public/locales")
+      : "/locales",
+  reloadOnPrerender: process.env.NODE_ENV === "development",
+
   backend: {
-    loadPath: './public/locales/{{lng}}/{{ns}}.json',
+    loadPath: "./public/locales/{{lng}}/{{ns}}.json",
   },
 };
