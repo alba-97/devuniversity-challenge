@@ -1,0 +1,61 @@
+{
+  "dashboard": {
+    "title": "Panel de Control",
+    "welcome": "Bienvenido",
+    "totalTasks": "Tareas Totales",
+    "noTasksFound": "No se encontraron tareas",
+    "logout": "Cerrar Sesión"
+  },
+  "task": {
+    "createdAt": "Creado el",
+    "updatedAt": "Actualizado el",
+    "backToDashboard": "Volver al Panel de Control"
+  },
+  "taskCreation": {
+    "title": "Crear Nueva Tarea",
+    "taskTitle": "Título de la Tarea",
+    "description": "Descripción",
+    "priority": "Prioridad",
+    "status": "Estado",
+    "createButton": "Crear Tarea"
+  },
+  "taskList": {
+    "summary": "Resumen de Tareas",
+    "all": "Todas"
+  },
+  "login": {
+    "title": "Iniciar sesión en tu cuenta",
+    "email_label": "Correo electrónico",
+    "email_placeholder": "Ingresa tu correo electrónico",
+    "password_label": "Contraseña",
+    "password_placeholder": "Ingresa tu contraseña",
+    "sign_in": "Iniciar Sesión",
+    "signing_in": "Iniciando Sesión...",
+    "create_account": "Crear una nueva cuenta",
+    "errors": {
+      "login_failed": "Inicio de sesión fallido. Por favor, verifica tus credenciales."
+    }
+  },
+  "register": {
+    "title": "Crear una nueva cuenta",
+    "username_label": "Nombre de usuario",
+    "username_placeholder": "Elige un nombre de usuario",
+    "email_label": "Correo electrónico",
+    "email_placeholder": "Ingresa tu correo electrónico",
+    "password_label": "Contraseña",
+    "password_placeholder": "Crea una contraseña",
+    "confirm_password_label": "Confirmar Contraseña",
+    "confirm_password_placeholder": "Repite tu contraseña",
+    "register_button": "Registrarse",
+    "registering_button": "Registrando...",
+    "login_link": "¿Ya tienes una cuenta? Inicia sesión",
+    "errors": {
+      "username_required": "El nombre de usuario es obligatorio",
+      "email_required": "El correo electrónico es obligatorio",
+      "password_required": "La contraseña es obligatoria",
+      "password_mismatch": "Las contraseñas no coinciden",
+      "password_too_short": "La contraseña debe tener al menos 6 caracteres",
+      "registration_failed": "Registro fallido. Por favor, intenta de nuevo."
+    }
+  }
+}

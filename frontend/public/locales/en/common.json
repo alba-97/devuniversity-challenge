@@ -1,0 +1,62 @@
+{
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome",
+    "totalTasks": "Total Tasks",
+    "noTasksFound": "No tasks found",
+    "logout": "Logout"
+  },
+  "task": {
+    "createdAt": "Created at",
+    "updatedAt": "Updated at",
+    "backToDashboard": "Back to Dashboard"
+  },
+  "taskCreation": {
+    "title": "Create New Task",
+    "taskTitle": "Task Title",
+    "description": "Description",
+    "priority": "Priority",
+    "status": "Status",
+    "createButton": "Create Task"
+  },
+  "taskList": {
+    "summary": "Task Summary",
+    "all": "All",
+    "deleteTask": "Delete Task"
+  },
+  "login": {
+    "title": "Sign in to your account",
+    "email_label": "Email address",
+    "email_placeholder": "Enter your email",
+    "password_label": "Password",
+    "password_placeholder": "Enter your password",
+    "sign_in": "Sign In",
+    "signing_in": "Signing In...",
+    "create_account": "Create a new account",
+    "errors": {
+      "login_failed": "Login failed. Please check your credentials."
+    }
+  },
+  "register": {
+    "title": "Create a new account",
+    "username_label": "Username",
+    "username_placeholder": "Choose a username",
+    "email_label": "Email address",
+    "email_placeholder": "Enter your email",
+    "password_label": "Password",
+    "password_placeholder": "Create a password",
+    "confirm_password_label": "Confirm Password",
+    "confirm_password_placeholder": "Repeat your password",
+    "register_button": "Register",
+    "registering_button": "Registering...",
+    "login_link": "Already have an account? Log in",
+    "errors": {
+      "username_required": "Username is required",
+      "email_required": "Email is required",
+      "password_required": "Password is required",
+      "password_mismatch": "Passwords do not match",
+      "password_too_short": "Password must be at least 6 characters long",
+      "registration_failed": "Registration failed. Please try again."
+    }
+  }
+}
