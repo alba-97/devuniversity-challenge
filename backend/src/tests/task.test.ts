@@ -16,6 +16,7 @@ describe("Task API", () => {
     if (mongoose.connection.readyState !== 0) await mongoose.disconnect();
 
     await mongoose.connect(testMongoURI);
+    await new Promise((resolve) => setTimeout(resolve, 2000));
   });
 
   afterAll(async () => {
