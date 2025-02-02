@@ -19,7 +19,7 @@ import { Spinner } from "@/components/Spinner";
 import TaskList from "@/components/dashboard/TaskList";
 
 export default function DashboardPage() {
-  const { t } = useTranslation("common");
+  const { t } = useTranslation();
   const isTranslationReady = useTranslationReady();
   const { user, logout } = useAuth();
   const router = useRouter();
@@ -31,7 +31,8 @@ export default function DashboardPage() {
     status: TaskStatus.PENDING,
   });
   const [filter, setFilter] = useState<TaskStatus | "all">("all");
-  const [isLogouting, setIsLogouting] = useState(false);
+  const [refetch, setRefetch] = useState<boolean>(false);
+  const [isLogouting, setIsLogouting] = useState<boolean>(false);
 
   useLanguageEffect();
 
@@ -40,7 +41,8 @@ export default function DashboardPage() {
 
     const fetchTasks = async () => {
       try {
-        const fetchedTasks = await TaskService.getTasks();
+        const query = filter === "all" ? {} : { status: filter };
+        const fetchedTasks = await TaskService.getTasks(query);
         setTasks(fetchedTasks);
       } catch (error) {
         console.error("Failed to fetch tasks", error);
@@ -48,7 +50,7 @@ export default function DashboardPage() {
     };
 
     fetchTasks();
-  }, [isTranslationReady]);
+  }, [isTranslationReady, filter, refetch]);
 
   if (!isTranslationReady) {
     return <div>Loading...</div>;
@@ -65,6 +67,7 @@ export default function DashboardPage() {
         priority: TaskPriority.LOW,
         status: TaskStatus.PENDING,
       });
+      setFilter("all");
     } catch (error) {
       console.error("Failed to create task", error);
     }
@@ -74,6 +77,7 @@ export default function DashboardPage() {
     try {
       await TaskService.deleteTask(taskId);
       setTasks(tasks.filter((task) => task._id !== taskId));
+      setRefetch(!refetch);
     } catch (error) {
       console.error("Failed to delete task", error);
     }
@@ -90,9 +94,6 @@ export default function DashboardPage() {
       setIsLogouting(false);
     }
   };
-
-  const filteredTasks =
-    filter === "all" ? tasks : tasks.filter((task) => task.status === filter);
 
   return (
     <div className="container mx-auto px-4 py-8 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen transition-colors duration-300 ease-in-out">
@@ -111,6 +112,7 @@ export default function DashboardPage() {
             className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded flex items-center justify-center"
             onClick={handleLogout}
             disabled={isLogouting}
+            data-testid="logout-button"
           >
             {isLogouting ? (
               <Spinner className="w-5 h-5 text-white" />
@@ -133,7 +135,7 @@ export default function DashboardPage() {
         <div>
           <div>
             <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-6 border-b border-gray-200 dark:border-gray-700 pb-3">
-              {t("dashboard.summary")}
+              {t("taskList.summary")}
             </h2>
 
             <div className="flex space-x-2 mb-6 overflow-x-auto pb-5 whitespace-nowrap">
@@ -159,12 +161,12 @@ export default function DashboardPage() {
               </p>
             </div>
 
-            {filteredTasks.length === 0 ? (
+            {tasks.length === 0 ? (
               <div className="text-center py-8 text-gray-500 dark:text-gray-400">
                 <p>{t("dashboard.noTasksFound")}</p>
               </div>
             ) : (
-              <TaskList tasks={filteredTasks} onDeleteTask={handleDeleteTask} />
+              <TaskList tasks={tasks} onDeleteTask={handleDeleteTask} />
             )}
           </div>
         </div>

@@ -2,19 +2,29 @@ import { Request, Response, NextFunction } from "express";
 import Task from "../models/Task";
 import { TaskStatus, TaskPriority } from "../models/Task";
 
+interface TaskOptions {
+  user?: string;
+  status?: TaskStatus;
+}
+
 export const getTasks = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
+    const { status } = req.query;
     const userId = req.user?.id;
 
-    if (!userId) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
+    if (!userId) return res.status(401).json({ message: "Unauthorized" });
 
-    const tasks = await Task.find({ user: userId });
+    const options: TaskOptions = {
+      user: userId,
+    };
+
+    if (status) options.status = status as TaskStatus;
+
+    const tasks = await Task.find(options);
 
     res.json(tasks);
   } catch (error) {
@@ -88,7 +98,7 @@ export const updateTask = async (
 ) => {
   try {
     const { id } = req.params;
-    const { title, description, status, priority, parent, subtasks } = req.body;
+    const { title, description, status, priority, parent } = req.body;
     const userId = req.user?.id;
 
     if (!userId) return res.status(401).json({ message: "Unauthorized" });

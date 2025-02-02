@@ -13,22 +13,24 @@ describe("Task API", () => {
     const testMongoURI =
       process.env.TEST_MONGODB_URI || "mongodb://localhost:27017/todo_app_test";
 
-    if (mongoose.connection.readyState !== 0) {
-      await mongoose.disconnect();
-    }
+    if (mongoose.connection.readyState !== 0) await mongoose.disconnect();
 
     await mongoose.connect(testMongoURI);
   });
 
   afterAll(async () => {
-    await User.deleteMany({});
-    await Task.deleteMany({});
+    await Promise.all([
+      mongoose.connection.db?.dropCollection("tasks"),
+      mongoose.connection.db?.dropCollection("users"),
+    ]);
     await mongoose.connection.close();
   });
 
   beforeEach(async () => {
-    await User.deleteMany({});
-    await Task.deleteMany({});
+    await Promise.all([
+      mongoose.connection.db?.dropCollection("tasks"),
+      mongoose.connection.db?.dropCollection("users"),
+    ]);
 
     const testUser = {
       username: "taskuser",

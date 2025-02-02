@@ -13,7 +13,7 @@ export default function TaskCreationForm({
   setNewTask,
   onSubmit,
 }: TaskCreationFormProps) {
-  const { t } = useTranslation("common");
+  const { t } = useTranslation();
 
   return (
     <div>

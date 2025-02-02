@@ -59,13 +59,6 @@ jest.mock("@/components/dashboard/TaskCreationForm", () => {
   };
 });
 
-jest.mock("@/components/dashboard/Logout", () => {
-  return {
-    __esModule: true,
-    default: () => <div data-testid="logout-component">Logout</div>,
-  };
-});
-
 jest.mock("@/components/ThemeToggle", () => {
   return {
     __esModule: true,
@@ -158,7 +151,7 @@ describe("DashboardPage", () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByTestId("logout-component")).toBeInTheDocument();
+      expect(screen.getByTestId("logout-button")).toBeInTheDocument();
       expect(screen.getByTestId("theme-toggle")).toBeInTheDocument();
     });
   });

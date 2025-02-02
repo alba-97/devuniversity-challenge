@@ -7,7 +7,7 @@ import { TaskService } from "@/services/taskService";
 import { Task, TaskStatus, TaskPriority } from "@/interfaces/task";
 
 export default function TaskDetailPage() {
-  const { t } = useTranslation("common");
+  const { t } = useTranslation();
   const params = useParams();
   const router = useRouter();
   const [task, setTask] = useState<Task | null>(null);

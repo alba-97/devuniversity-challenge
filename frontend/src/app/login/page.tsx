@@ -10,7 +10,7 @@ import { useLanguageEffect } from "@/hooks/useLanguageEffect";
 import { isAxiosError } from "axios";
 
 export default function LoginPage() {
-  const { t } = useTranslation("common");
+  const { t } = useTranslation();
   const isTranslationReady = useTranslationReady();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

@@ -48,29 +48,6 @@ jest.mock("next/navigation", () => ({
   useParams: jest.fn(() => ({ taskId: "1" })),
 }));
 
-jest.mock("@/components/dashboard/TaskDescription", () => {
-  return {
-    __esModule: true,
-    default: () => (
-      <div data-testid="task-description">Task Description Component</div>
-    ),
-  };
-});
-
-jest.mock("@/components/dashboard/TaskTitle", () => {
-  return {
-    __esModule: true,
-    default: () => <div data-testid="task-title">Task Title Component</div>,
-  };
-});
-
-jest.mock("@/components/dashboard/TaskStatus", () => {
-  return {
-    __esModule: true,
-    default: () => <div data-testid="task-status">Task Status Component</div>,
-  };
-});
-
 describe("TaskDetailPage", () => {
   const mockUser: User = {
     id: "1",

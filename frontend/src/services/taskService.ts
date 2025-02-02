@@ -8,7 +8,7 @@ import {
 } from "@/interfaces/task";
 
 export interface TaskFilterOptions {
-  status?: TaskStatus[];
+  status?: TaskStatus;
   priority?: TaskPriority[];
   tags?: string[];
   estimatedHoursMin?: number;
@@ -21,49 +21,29 @@ export interface TaskFilterOptions {
 
 export const TaskService = {
   async getTasks(filters?: TaskFilterOptions): Promise<Task[]> {
-    try {
-      const response = await api.get<Task[]>("/tasks", {
-        params: filters,
-      });
-      return response.data;
-    } catch (error: any) {
-      throw error.response?.data || new Error("Failed to fetch tasks");
-    }
+    const response = await api.get<Task[]>("/tasks", {
+      params: filters,
+    });
+    return response.data;
   },
 
   async getTaskById(taskId: string): Promise<Task> {
-    try {
-      const response = await api.get<Task>(`/tasks/${taskId}`);
-      return response.data;
-    } catch (error: any) {
-      throw error.response?.data || new Error("Failed to fetch task");
-    }
+    const response = await api.get<Task>(`/tasks/${taskId}`);
+    return response.data;
   },
 
   async createTask(taskData: TaskCreateDTO): Promise<Task> {
-    try {
-      const response = await api.post<Task>("/tasks", taskData);
-      return response.data;
-    } catch (error: any) {
-      throw error.response?.data || new Error("Failed to create task");
-    }
+    const response = await api.post<Task>("/tasks", taskData);
+    return response.data;
   },
 
   async updateTask(taskId: string, taskData: TaskUpdateDTO): Promise<Task> {
-    try {
-      const response = await api.put<Task>(`/tasks/${taskId}`, taskData);
-      return response.data;
-    } catch (error: any) {
-      throw error.response?.data || new Error("Failed to update task");
-    }
+    const response = await api.put<Task>(`/tasks/${taskId}`, taskData);
+    return response.data;
   },
 
   async deleteTask(taskId: string): Promise<void> {
-    try {
-      await api.delete(`/tasks/${taskId}`);
-    } catch (error: any) {
-      throw error.response?.data || new Error("Failed to delete task");
-    }
+    await api.delete(`/tasks/${taskId}`);
   },
 
   async addSubtask(
@@ -82,24 +62,22 @@ export const TaskService = {
     subtaskId: string,
     subtaskData: { title?: string; completed?: boolean }
   ): Promise<Task> {
-    try {
-      const response = await api.put<Task>(
-        `/tasks/${taskId}/subtasks/${subtaskId}`,
-        subtaskData
-      );
-      return response.data;
-    } catch (error: any) {
-      throw error.response?.data || new Error("Failed to update subtask");
-    }
+    const response = await api.put<Task>(
+      `/tasks/${taskId}/subtasks/${subtaskId}`,
+      subtaskData
+    );
+    return response.data;
   },
 
-  async createSubtask(taskId: string, subtaskData: TaskCreateDTO): Promise<Task> {
-    try {
-      const response = await api.post<Task>(`/tasks/${taskId}/subtask`, subtaskData);
-      return response.data;
-    } catch (error: any) {
-      throw error.response?.data || new Error("Failed to create subtask");
-    }
+  async createSubtask(
+    taskId: string,
+    subtaskData: TaskCreateDTO
+  ): Promise<Task> {
+    const response = await api.post<Task>(
+      `/tasks/${taskId}/subtask`,
+      subtaskData
+    );
+    return response.data;
   },
 
   async addTaskDependency(
@@ -109,15 +87,11 @@ export const TaskService = {
       type: "BLOCKS" | "DEPENDS_ON";
     }
   ): Promise<Task> {
-    try {
-      const response = await api.post<Task>(
-        `/tasks/${taskId}/dependencies`,
-        dependencyData
-      );
-      return response.data;
-    } catch (error: any) {
-      throw error.response?.data || new Error("Failed to add task dependency");
-    }
+    const response = await api.post<Task>(
+      `/tasks/${taskId}/dependencies`,
+      dependencyData
+    );
+    return response.data;
   },
 
   async getTaskAnalytics(): Promise<{
@@ -125,11 +99,7 @@ export const TaskService = {
     tasksByStatus: Record<TaskStatus, number>;
     tasksByPriority: Record<TaskPriority, number>;
   }> {
-    try {
-      const response = await api.get("/tasks/analytics");
-      return response.data;
-    } catch (error: any) {
-      throw error.response?.data || new Error("Failed to fetch task analytics");
-    }
+    const response = await api.get("/tasks/analytics");
+    return response.data;
   },
 };
