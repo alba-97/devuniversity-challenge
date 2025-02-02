@@ -40,7 +40,8 @@
     "signing_in": "Iniciando Sesión...",
     "create_account": "Crear una nueva cuenta",
     "errors": {
-      "login_failed": "Inicio de sesión fallido. Por favor, verifica tus credenciales."
+      "login_failed": "Inicio de sesión fallido. Por favor, verifica tus credenciales.",
+      "unknown": "Algo salió mal. Por favor, intenta de nuevo."
     }
   },
   "register": {

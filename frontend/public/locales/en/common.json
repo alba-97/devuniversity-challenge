@@ -41,7 +41,8 @@
     "signing_in": "Signing In...",
     "create_account": "Create a new account",
     "errors": {
-      "login_failed": "Login failed. Please check your credentials."
+      "login_failed": "Login failed. Please check your credentials.",
+      "unknown": "Something went wrong. Please try again."
     }
   },
   "register": {

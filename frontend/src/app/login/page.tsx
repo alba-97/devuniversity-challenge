@@ -7,6 +7,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useTranslation } from "react-i18next";
 import { useTranslationReady } from "@/hooks/useTranslationReady";
 import { useLanguageEffect } from "@/hooks/useLanguageEffect";
+import { isAxiosError } from "axios";
 
 export default function LoginPage() {
   const { t } = useTranslation("common");
@@ -30,7 +31,9 @@ export default function LoginPage() {
       await login(email, password);
       router.push("/dashboard");
     } catch (err) {
-      setError(t("login.errors.login_failed"));
+      if (isAxiosError(err) && err.response?.status === 401)
+        setError(t("login.errors.login_failed"));
+      else setError(t("login.errors.unknown"));
     }
   };
 

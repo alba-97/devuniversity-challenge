@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import Task from "../models/Task";
 import { TaskStatus, TaskPriority } from "../models/Task";
-import mongoose from "mongoose";
 
 export const getTasks = async (
   req: Request,
@@ -58,7 +57,7 @@ export const createTask = async (
   next: NextFunction
 ) => {
   try {
-    const { title, description, status, priority, parent, subtasks } = req.body;
+    const { title, description, status, priority, parent } = req.body;
     const userId = req.user?.id;
 
     if (!userId) {

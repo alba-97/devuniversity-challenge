@@ -3,15 +3,11 @@ import { AuthResponse } from "@/interfaces/auth";
 
 export const AuthService = {
   async login(email: string, password: string): Promise<AuthResponse> {
-    try {
-      const response = await api.post<AuthResponse>("/auth/login", {
-        email,
-        password,
-      });
-      return response.data;
-    } catch (error: any) {
-      throw error.response?.data || new Error("Login failed");
-    }
+    const response = await api.post<AuthResponse>("/auth/login", {
+      email,
+      password,
+    });
+    return response.data;
   },
 
   async register(
