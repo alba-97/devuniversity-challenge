@@ -1,46 +1,35 @@
 {
   "name": "todo-app-backend",
   "version": "1.0.0",
-  "description": "Backend for Todo List Application",
-  "main": "dist/server.js",
+  "description": "",
+  "main": "src/index.ts",
   "scripts": {
-    "start": "node dist/server.js",
-    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "build": "tsc",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
-    "lint": "eslint . --ext .ts",
-    "lint:fix": "eslint . --ext .ts --fix",
-    "prepare": "npm run build",
-    "swagger": "ts-node src/config/swagger.ts"
+    "dev": "tsc && tsnd --respawn src/index.ts",
+    "start": "node dist/index.js"
   },
-  "keywords": [
-    "todo",
-    "typescript",
-    "express",
-    "mongodb"
-  ],
-  "author": "Your Name",
-  "license": "MIT",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "@types/cookie-parser": "^1.4.8",
+    "@flydotio/dockerfile": "^0.7.4",
     "bcryptjs": "^2.4.3",
-    "compression": "^1.7.4",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "express-validator": "^7.0.1",
-    "helmet": "^7.1.0",
+    "express-validator": "^7.2.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.9.6",
+    "supertest": "^7.0.0",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.1"
+    "swagger-ui-express": "^5.0.1",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.6.2"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
-    "@types/compression": "^1.7.5",
+    "@types/cookie-parser": "^1.4.8",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/jest": "^29.5.14",
@@ -49,25 +38,6 @@
     "@types/node": "^20.12.7",
     "@types/supertest": "^6.0.2",
     "@types/swagger-jsdoc": "^6.0.4",
-    "@types/swagger-ui-express": "^4.1.6",
-    "eslint": "^8.57.0",
-    "jest": "^29.7.0",
-    "nodemon": "^3.1.0",
-    "supertest": "^7.0.0",
-    "ts-jest": "^29.1.2",
-    "ts-node": "^10.9.2",
-    "ts-node-dev": "^2.0.0",
-    "typescript": "^5.4.5"
-  },
-  "engines": {
-    "node": ">=18.0.0"
-  },
-  "jest": {
-    "preset": "ts-jest",
-    "testEnvironment": "node",
-    "coveragePathIgnorePatterns": [
-      "/node_modules/",
-      "/dist/"
-    ]
+    "@types/swagger-ui-express": "^4.1.7"
   }
 }

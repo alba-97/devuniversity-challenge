@@ -1,6 +1,6 @@
 import request from "supertest";
 import mongoose from "mongoose";
-import app from "../app";
+import app from "../";
 import User from "../models/User";
 import Task from "../models/Task";
 import { TaskStatus, TaskPriority } from "../models/Task";

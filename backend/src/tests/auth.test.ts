@@ -1,7 +1,7 @@
 import request from "supertest";
 import mongoose from "mongoose";
 import User from "../models/User";
-import app from "../app";
+import app from "../";
 
 describe("Authentication API", () => {
   beforeAll(async () => {
