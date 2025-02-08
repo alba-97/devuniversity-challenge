@@ -25,8 +25,8 @@ export interface Task {
   parent?: Task;
   estimatedHours?: number;
   tags?: string[];
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface TaskCreateDTO {

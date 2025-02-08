@@ -134,9 +134,7 @@ export const deleteTask = async (
     const { id } = req.params;
     const userId = req.user?.id;
 
-    if (!userId) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
+    if (!userId) return res.status(401).json({ message: "Unauthorized" });
 
     const task = await Task.findById(id);
 

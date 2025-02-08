@@ -26,21 +26,4 @@ export const AuthService = {
       throw error.response?.data || new Error("Registration failed");
     }
   },
-
-  async getCurrentUser(): Promise<AuthResponse> {
-    try {
-      const response = await api.get<AuthResponse>("/auth/current-user");
-      return response.data;
-    } catch (error: any) {
-      throw error.response?.data || new Error("Failed to fetch current user");
-    }
-  },
-
-  async logout(): Promise<void> {
-    try {
-      await api.post("/auth/logout");
-    } catch (error: any) {
-      throw error.response?.data || new Error("Logout failed");
-    }
-  },
 };

@@ -1,13 +1,7 @@
 "use client";
 
-import React, {
-  createContext,
-  useState,
-  useContext,
-  useEffect,
-  ReactNode,
-} from "react";
-import { useRouter, usePathname } from "next/navigation";
+import React, { createContext, useState, useContext, ReactNode } from "react";
+import { useRouter } from "next/navigation";
 import { User, AuthContextType } from "@/interfaces/auth";
 import { AuthService } from "@/services/AuthService";
 
@@ -20,34 +14,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
-  const pathname = usePathname();
-
-  useEffect(() => {
-    checkCurrentUser();
-  }, []);
-
-  const checkCurrentUser = async () => {
-    try {
-      setIsLoading(true);
-      const userData = await AuthService.getCurrentUser();
-      setUser({
-        id: userData.userId,
-        username: userData.username,
-        email: userData.email,
-      });
-      setIsAuthenticated(true);
-
-      if (pathname === "/login") router.push("/dashboard");
-    } catch {
-      setUser(null);
-      setIsAuthenticated(false);
-      if (pathname !== "/login") router.push("/login");
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const login = async (email: string, password: string) => {
     try {
@@ -105,7 +72,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       value={{
         user,
         isAuthenticated,
-        isLoading,
         login,
         register,
         logout,
