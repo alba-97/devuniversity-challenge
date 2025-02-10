@@ -35,13 +35,6 @@ export const register = async (
 
     const token = generateToken(`${newUser._id}`);
 
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-      maxAge: 3600000,
-    });
-
     res.status(201).json({
       userId: newUser._id,
       username: newUser.username,
@@ -72,13 +65,6 @@ export const login = async (
     }
 
     const token = generateToken(`${user._id}`);
-
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-      maxAge: 3600000,
-    });
 
     res.json({
       userId: user._id,

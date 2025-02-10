@@ -13,5 +13,6 @@ export default async (
     },
     { withCredentials: true }
   );
+  document.cookie = `token=${data.token}; Max-Age=3600; Secure; SameSite=Lax`;
   return data;
 };
