@@ -1,7 +1,7 @@
 import React from "react";
 import getTaskById from "@/api/getTaskById";
-import getCurrentUser from "@/api/getCurrentUser";
 import TaskDetail from "@/components/TaskDetail";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 
 interface ITaskDetailPageProps {
   params: { taskId: string };
@@ -9,7 +9,10 @@ interface ITaskDetailPageProps {
 
 export default async function TaskDetailPage({ params }: ITaskDetailPageProps) {
   const task = await getTaskById(params.taskId);
-  const user = await getCurrentUser();
 
-  return <TaskDetail task={task} user={user} />;
+  return (
+    <ProtectedRoute>
+      <TaskDetail task={task} />
+    </ProtectedRoute>
+  );
 }

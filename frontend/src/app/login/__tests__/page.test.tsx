@@ -1,45 +1,161 @@
+import React from "react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { render, screen } from "@testing-library/react";
 import LoginPage from "../page";
-import * as nextNavigation from "next/navigation";
+import login from "@/api/login";
+import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
+import { useTranslationReady } from "@/hooks/useTranslationReady";
 
+jest.mock("@/api/login", () => jest.fn());
 jest.mock("next/navigation", () => ({
   useRouter: jest.fn(),
 }));
-
 jest.mock("react-i18next", () => ({
-  useTranslation: () => ({ t: (key: string) => key }),
-  I18nextProvider: ({ children }: { children: React.ReactNode }) => children,
+  useTranslation: jest.fn(),
 }));
-
-jest.mock("@/context/AuthContext", () => ({
-  useAuth: () => ({
-    login: jest.fn(),
-    isLoading: false,
-  }),
-  AuthProvider: ({ children }: { children: React.ReactNode }) => children,
-}));
-
 jest.mock("@/hooks/useTranslationReady", () => ({
-  useTranslationReady: () => true,
+  useTranslationReady: jest.fn(),
 }));
-
 jest.mock("@/hooks/useLanguageEffect", () => ({
   useLanguageEffect: jest.fn(),
 }));
 
 describe("LoginPage", () => {
+  const mockRouter = {
+    push: jest.fn(),
+    refresh: jest.fn(),
+  };
+
+  const mockTranslation = {
+    t: jest.fn((key) => {
+      const translations = {
+        "login.errors.login_failed": "Login failed",
+        "login.errors.unknown": "Unknown error",
+        "login.title": "Login",
+        "login.email_label": "Email",
+        "login.password_label": "Password",
+        "login.email_placeholder": "Enter your email",
+        "login.password_placeholder": "Enter your password",
+        "login.signing_in": "Signing in...",
+        "login.sign_in": "Sign In",
+        "login.create_account": "Create an account",
+      };
+      return translations[key as keyof typeof translations] || key;
+    }),
+  };
+
   beforeEach(() => {
-    (nextNavigation.useRouter as jest.Mock).mockReturnValue({
-      push: jest.fn(),
+    jest.clearAllMocks();
+
+    (useRouter as jest.Mock).mockReturnValue(mockRouter);
+    (useTranslation as jest.Mock).mockReturnValue(mockTranslation);
+    (useTranslationReady as jest.Mock).mockReturnValue(true);
+  });
+
+  it("renders loading state when translations are not ready", () => {
+    (useTranslationReady as jest.Mock).mockReturnValue(false);
+
+    render(<LoginPage />);
+
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
+  });
+
+  it("renders login form when translations are ready", () => {
+    render(<LoginPage />);
+
+    expect(screen.getByText("Login")).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("Enter your email")).toBeInTheDocument();
+    expect(
+      screen.getByPlaceholderText("Enter your password")
+    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Sign In" })).toBeInTheDocument();
+  });
+
+  it("handles successful login", async () => {
+    (login as jest.Mock).mockResolvedValue({});
+
+    render(<LoginPage />);
+
+    const emailInput = screen.getByPlaceholderText("Enter your email");
+    const passwordInput = screen.getByPlaceholderText("Enter your password");
+    const submitButton = screen.getByRole("button", { name: "Sign In" });
+
+    fireEvent.change(emailInput, { target: { value: "test@example.com" } });
+    fireEvent.change(passwordInput, { target: { value: "password123" } });
+    fireEvent.click(submitButton);
+
+    await waitFor(() => {
+      expect(login).toHaveBeenCalledWith("test@example.com", "password123");
+      expect(mockRouter.push).toHaveBeenCalledWith("/dashboard");
+      expect(mockRouter.refresh).toHaveBeenCalled();
     });
   });
 
-  it("renders a heading", () => {
+  it("handles login failure with 401 error", async () => {
+    const mockError = {
+      response: { status: 401 },
+      isAxiosError: true,
+    };
+    (login as jest.Mock).mockRejectedValue(mockError);
+
     render(<LoginPage />);
 
-    const heading = screen.getByRole("heading", { level: 2 });
+    const emailInput = screen.getByPlaceholderText("Enter your email");
+    const passwordInput = screen.getByPlaceholderText("Enter your password");
+    const submitButton = screen.getByRole("button", { name: "Sign In" });
 
-    expect(heading).toBeInTheDocument();
+    fireEvent.change(emailInput, { target: { value: "test@example.com" } });
+    fireEvent.change(passwordInput, { target: { value: "wrongpassword" } });
+    fireEvent.click(submitButton);
+
+    await waitFor(() => {
+      expect(screen.getByText("Login failed")).toBeInTheDocument();
+    });
+  });
+
+  it("handles unknown login error", async () => {
+    const mockError = new Error("Network error");
+    (login as jest.Mock).mockRejectedValue(mockError);
+
+    render(<LoginPage />);
+
+    const emailInput = screen.getByPlaceholderText("Enter your email");
+    const passwordInput = screen.getByPlaceholderText("Enter your password");
+    const submitButton = screen.getByRole("button", { name: "Sign In" });
+
+    fireEvent.change(emailInput, { target: { value: "test@example.com" } });
+    fireEvent.change(passwordInput, { target: { value: "password123" } });
+    fireEvent.click(submitButton);
+
+    await waitFor(() => {
+      expect(screen.getByText("Unknown error")).toBeInTheDocument();
+    });
+  });
+
+  it("disables submit button during login", async () => {
+    (login as jest.Mock).mockImplementation(() => new Promise(() => {})); // Never resolves to keep button disabled
+
+    render(<LoginPage />);
+
+    const emailInput = screen.getByPlaceholderText("Enter your email");
+    const passwordInput = screen.getByPlaceholderText("Enter your password");
+    const submitButton = screen.getByRole("button", { name: "Sign In" });
+
+    fireEvent.change(emailInput, { target: { value: "test@example.com" } });
+    fireEvent.change(passwordInput, { target: { value: "password123" } });
+    fireEvent.click(submitButton);
+
+    await waitFor(() => {
+      expect(submitButton).toBeDisabled();
+      expect(screen.getByText("Signing in...")).toBeInTheDocument();
+    });
+  });
+
+  it("navigates to register page", () => {
+    render(<LoginPage />);
+
+    const registerLink = screen.getByText("Create an account");
+    expect(registerLink).toHaveAttribute("href", "/register");
   });
 });

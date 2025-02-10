@@ -1,17 +1,20 @@
-import getCurrentUser from "@/api/getCurrentUser";
 import getTasks from "@/api/getTasks";
 import Dashboard from "@/components/Dashboard";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { TaskFilterOptions } from "@/services/taskService";
 
 interface IDashboardPageProps {
-  searchParams: TaskFilterOptions;
+  searchParams?: TaskFilterOptions;
 }
 
 export default async function DashboardPage({
-  searchParams,
+  searchParams = {},
 }: IDashboardPageProps) {
   const tasks = await getTasks(searchParams);
-  const user = await getCurrentUser();
 
-  return <Dashboard tasks={tasks} user={user} params={searchParams} />;
+  return (
+    <ProtectedRoute>
+      <Dashboard tasks={tasks} params={searchParams} />
+    </ProtectedRoute>
+  );
 }

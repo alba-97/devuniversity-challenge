@@ -3,11 +3,11 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/context/AuthContext";
 import { useTranslation } from "react-i18next";
 import { useTranslationReady } from "@/hooks/useTranslationReady";
 import { useLanguageEffect } from "@/hooks/useLanguageEffect";
 import { isAxiosError } from "axios";
+import login from "@/api/login";
 
 export default function LoginPage() {
   const { t } = useTranslation();
@@ -15,7 +15,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const { login, isLoading } = useAuth();
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   useLanguageEffect();
@@ -25,16 +25,19 @@ export default function LoginPage() {
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
+    setLoading(true);
     e.preventDefault();
     setError(null);
     try {
       await login(email, password);
       router.push("/dashboard");
+      router.refresh();
     } catch (err) {
       if (isAxiosError(err) && err.response?.status === 401)
         setError(t("login.errors.login_failed"));
       else setError(t("login.errors.unknown"));
     }
+    setLoading(false);
   };
 
   return (
@@ -91,14 +94,14 @@ export default function LoginPage() {
           <div>
             <button
               type="submit"
-              disabled={isLoading}
+              disabled={loading}
               className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white ${
-                isLoading
+                loading
                   ? "bg-gray-500 dark:bg-gray-600 cursor-not-allowed"
                   : "bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600"
               } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
             >
-              {isLoading ? t("login.signing_in") : t("login.sign_in")}
+              {loading ? t("login.signing_in") : t("login.sign_in")}
             </button>
           </div>
 

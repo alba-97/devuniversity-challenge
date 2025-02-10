@@ -4,9 +4,9 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "next-i18next";
-import { useAuth } from "@/context/AuthContext";
 import { useTranslationReady } from "@/hooks/useTranslationReady";
 import { useLanguageEffect } from "@/hooks/useLanguageEffect";
+import register from "@/api/register";
 
 export default function RegisterPage() {
   const { t } = useTranslation(["common"]);
@@ -16,7 +16,7 @@ export default function RegisterPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const { register, isLoading } = useAuth();
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   useLanguageEffect();
@@ -26,6 +26,7 @@ export default function RegisterPage() {
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
+    setLoading(true);
     e.preventDefault();
     setError(null);
 
@@ -64,6 +65,8 @@ export default function RegisterPage() {
           : t("register.errors.registration_failed")
       );
     }
+
+    setLoading(false);
   };
 
   return (
@@ -149,14 +152,14 @@ export default function RegisterPage() {
           <div>
             <button
               type="submit"
-              disabled={isLoading}
+              disabled={loading}
               className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white ${
-                isLoading
+                loading
                   ? "bg-gray-500 dark:bg-gray-600 cursor-not-allowed"
                   : "bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600"
               } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
             >
-              {isLoading
+              {loading
                 ? t("register.registering_button")
                 : t("register.register_button")}
             </button>

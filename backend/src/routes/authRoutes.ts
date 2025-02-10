@@ -1,13 +1,8 @@
 import express from "express";
-import { 
-  register, 
-  login, 
-  logout, 
-  getCurrentUser 
-} from "../controllers/authController";
-import { 
-  validateRegistration, 
-  validateLogin 
+import { register, login, getCurrentUser } from "../controllers/authController";
+import {
+  validateRegistration,
+  validateLogin,
 } from "../middleware/validationMiddleware";
 import { authenticateToken } from "../middleware/authMiddleware";
 
@@ -64,22 +59,6 @@ router.post("/register", validateRegistration, register);
  *         description: Invalid credentials
  */
 router.post("/login", validateLogin, login);
-
-/**
- * @swagger
- * /api/auth/logout:
- *   post:
- *     summary: Logout a user
- *     tags: [Authentication]
- *     security:
- *       - bearerAuth: []
- *     responses:
- *       200:
- *         description: User logged out successfully
- *       401:
- *         description: Unauthorized
- */
-router.post("/logout", authenticateToken, logout);
 
 /**
  * @swagger

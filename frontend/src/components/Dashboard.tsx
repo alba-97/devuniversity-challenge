@@ -10,26 +10,25 @@ import {
   TaskPriority,
   TaskStatus,
 } from "@/interfaces/task";
-import TaskCreationForm from "@/components/dashboard/TaskCreationForm";
+import TaskCreationForm from "@/components/TaskCreationForm";
 import { useRouter } from "next/navigation";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Spinner } from "@/components/Spinner";
-import TaskList from "@/components/dashboard/TaskList";
+import TaskList from "@/components/TaskList";
 import createTask from "@/api/createTask";
 import deleteTask from "@/api/deleteTask";
-import { User } from "@/interfaces";
 import logout from "@/api/logout";
 import { TaskFilterOptions } from "@/services/taskService";
+import { useUser } from "@/context/UserContext";
 
 interface IDashboardProps {
   tasks: Task[];
-  user: User | null;
   params: TaskFilterOptions;
 }
 
-export default function Dashboard({ tasks, user, params }: IDashboardProps) {
+export default function Dashboard({ tasks, params }: IDashboardProps) {
   const router = useRouter();
-  if (!user) router.push("/login");
+  const user = useUser();
 
   const { t } = useTranslation();
   const [newTask, setNewTask] = useState<TaskCreateDTO>({

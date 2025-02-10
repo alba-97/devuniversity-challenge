@@ -6,7 +6,7 @@ import Task from "../models/Task";
 import { TaskStatus, TaskPriority } from "../models/Task";
 
 describe("Task API", () => {
-  let authCookie: string;
+  let authToken: string;
   let userId: string;
 
   beforeAll(async () => {
@@ -16,15 +16,15 @@ describe("Task API", () => {
     if (mongoose.connection.readyState !== 0) await mongoose.disconnect();
 
     await mongoose.connect(testMongoURI);
-    await new Promise((resolve) => setTimeout(resolve, 2000));
   });
 
   afterAll(async () => {
-    await Promise.all([
-      mongoose.connection.db?.dropCollection("tasks"),
-      mongoose.connection.db?.dropCollection("users"),
-    ]);
-    await mongoose.connection.close();
+    try {
+      await Promise.all([User.deleteMany({}), Task.deleteMany({})]);
+      await mongoose.connection.close();
+    } catch (error) {
+      process.exit(1);
+    }
   });
 
   beforeEach(async () => {
@@ -49,7 +49,7 @@ describe("Task API", () => {
       })
       .expect(200);
 
-    authCookie = loginResponse.headers["set-cookie"];
+    authToken = `Bearer ${loginResponse.body.token}`;
     userId = loginResponse.body.userId;
   });
 
@@ -64,7 +64,7 @@ describe("Task API", () => {
 
       const response = await request(app)
         .post("/api/tasks")
-        .set("Cookie", authCookie)
+        .set("Authorization", authToken)
         .send(taskData);
 
       expect(response.statusCode).toBe(201);
@@ -95,7 +95,7 @@ describe("Task API", () => {
 
       const response = await request(app)
         .post("/api/tasks")
-        .set("Cookie", authCookie)
+        .set("Authorization", authToken)
         .send(taskData);
 
       expect(response.statusCode).toBe(201);
@@ -130,7 +130,7 @@ describe("Task API", () => {
 
       const response = await request(app)
         .get("/api/tasks")
-        .set("Cookie", authCookie);
+        .set("Authorization", authToken);
 
       expect(response.statusCode).toBe(200);
       expect(response.body.length).toBe(2);
@@ -141,7 +141,7 @@ describe("Task API", () => {
     it("should return empty array if no tasks exist", async () => {
       const response = await request(app)
         .get("/api/tasks")
-        .set("Cookie", authCookie);
+        .set("Authorization", authToken);
 
       expect(response.statusCode).toBe(200);
       expect(response.body.length).toBe(0);
@@ -167,7 +167,7 @@ describe("Task API", () => {
 
       const response = await request(app)
         .get(`/api/tasks/${task._id}`)
-        .set("Cookie", authCookie);
+        .set("Authorization", authToken);
 
       expect(response.statusCode).toBe(200);
       expect(response.body).toMatchObject({
@@ -182,7 +182,7 @@ describe("Task API", () => {
 
       const response = await request(app)
         .get(`/api/tasks/${nonExistentId}`)
-        .set("Cookie", authCookie);
+        .set("Authorization", authToken);
 
       expect(response.statusCode).toBe(404);
     });
@@ -207,7 +207,7 @@ describe("Task API", () => {
 
       const response = await request(app)
         .put(`/api/tasks/${task._id}`)
-        .set("Cookie", authCookie)
+        .set("Authorization", authToken)
         .send(updateData);
 
       expect(response.statusCode).toBe(200);
@@ -241,7 +241,7 @@ describe("Task API", () => {
 
       const response = await request(app)
         .put(`/api/tasks/${task._id}`)
-        .set("Cookie", authCookie)
+        .set("Authorization", authToken)
         .send(updateData);
 
       expect(response.statusCode).toBe(404);
@@ -261,7 +261,7 @@ describe("Task API", () => {
 
       const response = await request(app)
         .delete(`/api/tasks/${task._id}`)
-        .set("Cookie", authCookie);
+        .set("Authorization", authToken);
 
       expect(response.statusCode).toBe(200);
 
@@ -287,7 +287,7 @@ describe("Task API", () => {
 
       const response = await request(app)
         .delete(`/api/tasks/${task._id}`)
-        .set("Cookie", authCookie);
+        .set("Authorization", authToken);
 
       expect(response.statusCode).toBe(403);
     });

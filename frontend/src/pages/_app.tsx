@@ -1,7 +1,6 @@
 import React from "react";
 import { NextPage } from "next";
 import { AppProps } from "next/app";
-import { AuthProvider } from "@/context/AuthContext";
 import "@/styles/globals.scss";
 
 type NextPageWithLayout = NextPage & {
@@ -14,8 +13,7 @@ type AppPropsWithLayout = AppProps & {
 
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page);
-
-  return <AuthProvider>{getLayout(<Component {...pageProps} />)}</AuthProvider>;
+  return getLayout(<Component {...pageProps} />);
 }
 
 export default MyApp;

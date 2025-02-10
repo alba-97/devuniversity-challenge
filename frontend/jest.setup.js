@@ -53,34 +53,4 @@ jest.mock("next/navigation", () => ({
   },
 }));
 
-jest.mock("@/context/AuthContext", () => ({
-  useAuth: () => ({
-    user: null,
-    isAuthenticated: false,
-    isLoading: false,
-    login: jest.fn(),
-    register: jest.fn(),
-    logout: jest.fn(),
-  }),
-  AuthProvider: ({ children }) => children,
-}));
-
-jest.mock("@/services/AuthService", () => ({
-  AuthService: {
-    login: jest.fn(),
-    register: jest.fn(),
-    getCurrentUser: jest.fn(),
-    logout: jest.fn(),
-  },
-}));
-
-jest.mock("@/services/TaskService", () => ({
-  TaskService: {
-    getTasks: jest.fn(),
-    createTask: jest.fn(),
-    updateTask: jest.fn(),
-    deleteTask: jest.fn(),
-  },
-}));
-
 console.error = jest.fn();

@@ -1,10 +1,11 @@
 import { Request, Response, NextFunction } from "express";
-import Task from "../models/Task";
+import Task, { ITask } from "../models/Task";
 import { TaskStatus, TaskPriority } from "../models/Task";
 
 interface TaskOptions {
   user?: string;
   status?: TaskStatus;
+  parent?: ITask | null;
 }
 
 export const getTasks = async (
@@ -20,12 +21,12 @@ export const getTasks = async (
 
     const options: TaskOptions = {
       user: userId,
+      parent: null,
     };
 
     if (status) options.status = status as TaskStatus;
 
-    const tasks = await Task.find(options);
-
+    const tasks = await Task.find(options).populate("subtasks");
     res.json(tasks);
   } catch (error) {
     next(error);

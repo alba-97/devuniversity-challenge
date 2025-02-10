@@ -14,16 +14,15 @@ import createSubtask from "@/api/createSubtask";
 import { useLanguageEffect } from "@/hooks/useLanguageEffect";
 import { useTranslationReady } from "@/hooks/useTranslationReady";
 import { Spinner } from "./Spinner";
+import { useUser } from "@/context/UserContext";
 
 interface ITaskDetailProps {
   task: Task | null;
-  user: User | null;
 }
 
-export default function TaskDetail({ task, user }: ITaskDetailProps) {
+export default function TaskDetail({ task }: ITaskDetailProps) {
   const router = useRouter();
 
-  if (!user) router.push("/login");
   if (!task) return <NotFound />;
 
   const { t } = useTranslation();

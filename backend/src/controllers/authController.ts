@@ -46,6 +46,7 @@ export const register = async (
       userId: newUser._id,
       username: newUser.username,
       email: newUser.email,
+      token,
     });
   } catch (error) {
     next(error);
@@ -83,20 +84,11 @@ export const login = async (
       userId: user._id,
       username: user.username,
       email: user.email,
+      token,
     });
   } catch (error) {
     next(error);
   }
-};
-
-export const logout = (_: Request, res: Response) => {
-  res.clearCookie("token", {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
-  });
-
-  res.json({ message: "Logged out successfully" });
 };
 
 export const getCurrentUser = async (

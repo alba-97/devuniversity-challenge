@@ -32,7 +32,8 @@ mongoose
   })
   .then(() => {
     console.log("Connected to MongoDB Atlas");
-    app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
+    if (process.env.NODE_ENV !== "test")
+      app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
   })
   .catch((err: unknown) => console.error(err));
 

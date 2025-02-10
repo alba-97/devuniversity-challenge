@@ -6,19 +6,17 @@ module.exports = {
     "^@/(.*)$": "<rootDir>/src/$1",
     "next/router": "next/router",
     "next/navigation": "next/navigation",
+    "\\.(css|less|scss|sass)$": "identity-obj-proxy"
   },
   transform: {
-    "^.+\\.tsx?$": "ts-jest",
+    "^.+\\.tsx?$": ["ts-jest", {
+      tsconfig: "tsconfig.jest.json",
+    }],
   },
   testMatch: [
     "**/__tests__/**/*.test.[jt]s?(x)",
     "**/__tests__/integration/**/*.test.[jt]s?(x)",
   ],
   modulePaths: ["<rootDir>/src"],
-  globals: {
-    "ts-jest": {
-      tsconfig: "tsconfig.jest.json",
-    },
-  },
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
 };

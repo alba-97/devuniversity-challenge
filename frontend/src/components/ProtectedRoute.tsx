@@ -1,26 +1,28 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/context/AuthContext";
+import getCurrentUser from "@/api/getCurrentUser";
+import { User } from "@/interfaces";
+import { UserContext } from "@/context/UserContext";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
 }
 
 export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const { isAuthenticated } = useAuth();
   const router = useRouter();
+  const [user, setUser] = useState<User | null>();
+
+  const checkUser = async () => {
+    const user = await getCurrentUser();
+    setUser(user);
+    if (!user) router.push("/login");
+  };
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      router.push("/login");
-    }
-  }, [isAuthenticated, router]);
+    checkUser();
+  }, [router]);
 
-  if (!isAuthenticated) {
-    return null;
-  }
-
-  return <>{children}</>;
+  return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
 };
