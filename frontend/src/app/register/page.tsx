@@ -7,6 +7,7 @@ import { useTranslation } from "next-i18next";
 import { useTranslationReady } from "@/hooks/useTranslationReady";
 import { useLanguageEffect } from "@/hooks/useLanguageEffect";
 import register from "@/api/register";
+import { Spinner } from "@/components/Spinner";
 
 export default function RegisterPage() {
   const { t } = useTranslation(["common"]);
@@ -22,7 +23,11 @@ export default function RegisterPage() {
   useLanguageEffect();
 
   if (!isTranslationReady) {
-    return <div>Loading...</div>;
+    return (
+      <div className="w-full flex items-center justify-center h-screen">
+        <Spinner className="w-5 h-5 text-white" />
+      </div>
+    );
   }
 
   const handleSubmit = async (e: React.FormEvent) => {

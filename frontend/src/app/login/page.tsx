@@ -22,7 +22,11 @@ export default function LoginPage() {
   useLanguageEffect();
 
   if (!isTranslationReady) {
-    return <div>Loading...</div>;
+    return (
+      <div className="w-full flex items-center justify-center h-screen">
+        <Spinner className="w-5 h-5 text-white" />
+      </div>
+    );
   }
 
   const handleSubmit = async (e: React.FormEvent) => {

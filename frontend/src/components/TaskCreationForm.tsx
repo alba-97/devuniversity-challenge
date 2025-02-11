@@ -24,9 +24,9 @@ export default function TaskCreationForm({
       </h2>
 
       <form
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           setLoading(true);
-          onSubmit(e);
+          await onSubmit(e);
           setLoading(false);
         }}
         className="space-y-6"
@@ -141,9 +141,7 @@ export default function TaskCreationForm({
 
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-3 rounded-md 
-          hover:bg-blue-700 dark:hover:bg-blue-500 
-          transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="flex items-center justify-center w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 dark:hover:bg-blue-500 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           {loading ? (
             <Spinner className="w-5 h-5 text-white" />
