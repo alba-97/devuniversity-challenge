@@ -93,6 +93,10 @@ The application is configured for deployment on Vercel:
 
 - `NEXT_PUBLIC_API_URL`: Backend API base URL
 
+## Demo
+
+https://devuniversity-challenge-two.vercel.app/
+
 ## License
 
 MIT License
