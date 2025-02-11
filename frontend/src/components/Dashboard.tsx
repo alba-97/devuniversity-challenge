@@ -82,7 +82,6 @@ export default function Dashboard({ tasks, params }: IDashboardProps) {
       router.push("/login");
     } catch (error) {
       console.error("Logout failed", error);
-    } finally {
       setIsLogouting(false);
     }
   };

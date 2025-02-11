@@ -41,8 +41,8 @@ export default function LoginPage() {
       if (isAxiosError(err) && err.response?.status === 401)
         setError(t("login.errors.login_failed"));
       else setError(t("login.errors.unknown"));
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
