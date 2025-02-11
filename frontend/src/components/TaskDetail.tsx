@@ -7,14 +7,12 @@ import { Task, TaskStatus, TaskPriority } from "@/interfaces/task";
 import getTaskById from "@/api/getTaskById";
 import updateTask from "@/api/updateTask";
 import deleteTask from "@/api/deleteTask";
-import { User } from "@/interfaces";
 import NotFound from "./NotFound";
 import formatDate from "@/utils/formatDate";
 import createSubtask from "@/api/createSubtask";
 import { useLanguageEffect } from "@/hooks/useLanguageEffect";
 import { useTranslationReady } from "@/hooks/useTranslationReady";
 import { Spinner } from "./Spinner";
-import { useUser } from "@/context/UserContext";
 
 interface ITaskDetailProps {
   task: Task | null;
@@ -38,6 +36,8 @@ export default function TaskDetail({ task }: ITaskDetailProps) {
 
   const isTranslationReady = useTranslationReady();
   useLanguageEffect();
+
+  const [loading, setLoading] = useState(false);
 
   if (!isTranslationReady) {
     return (
@@ -86,7 +86,7 @@ export default function TaskDetail({ task }: ITaskDetailProps) {
 
   const handleCreateChildTask = async () => {
     if (!task) return;
-
+    setLoading(true);
     try {
       await createSubtask(task._id, {
         title: childTaskTitle,
@@ -106,6 +106,7 @@ export default function TaskDetail({ task }: ITaskDetailProps) {
     } catch (err) {
       console.error("Failed to create child task", err);
     }
+    setLoading(false);
   };
 
   if (!task) return <div>{t("task.notFound")}</div>;
@@ -311,9 +312,13 @@ export default function TaskDetail({ task }: ITaskDetailProps) {
               <button
                 onClick={handleCreateChildTask}
                 disabled={!childTaskTitle}
-                className="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
+                className="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed items-center justify-center flex"
               >
-                {t("task.createChildTask")}
+                {loading ? (
+                  <Spinner className="w-5 h-5 text-white" />
+                ) : (
+                  t("task.createChildTask")
+                )}
               </button>
             </div>
           )}

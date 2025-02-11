@@ -8,6 +8,7 @@ import { useTranslationReady } from "@/hooks/useTranslationReady";
 import { useLanguageEffect } from "@/hooks/useLanguageEffect";
 import { isAxiosError } from "axios";
 import login from "@/api/login";
+import { Spinner } from "@/components/Spinner";
 
 export default function LoginPage() {
   const { t } = useTranslation();
@@ -101,7 +102,11 @@ export default function LoginPage() {
                   : "bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600"
               } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
             >
-              {loading ? t("login.signing_in") : t("login.sign_in")}
+              {loading ? (
+                <Spinner className="w-5 h-5 text-white" />
+              ) : (
+                t("login.sign_in")
+              )}
             </button>
           </div>
 

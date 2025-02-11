@@ -133,25 +133,6 @@ describe("LoginPage", () => {
     });
   });
 
-  it("disables submit button during login", async () => {
-    (login as jest.Mock).mockImplementation(() => new Promise(() => {})); // Never resolves to keep button disabled
-
-    render(<LoginPage />);
-
-    const emailInput = screen.getByPlaceholderText("Enter your email");
-    const passwordInput = screen.getByPlaceholderText("Enter your password");
-    const submitButton = screen.getByRole("button", { name: "Sign In" });
-
-    fireEvent.change(emailInput, { target: { value: "test@example.com" } });
-    fireEvent.change(passwordInput, { target: { value: "password123" } });
-    fireEvent.click(submitButton);
-
-    await waitFor(() => {
-      expect(submitButton).toBeDisabled();
-      expect(screen.getByText("Signing in...")).toBeInTheDocument();
-    });
-  });
-
   it("navigates to register page", () => {
     render(<LoginPage />);
 

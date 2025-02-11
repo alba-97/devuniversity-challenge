@@ -1,6 +1,7 @@
-import React from "react";
+import { useState } from "react";
 import { useTranslation } from "next-i18next";
 import { TaskCreateDTO, TaskPriority, TaskStatus } from "@/interfaces/task";
+import { Spinner } from "./Spinner";
 
 interface TaskCreationFormProps {
   newTask: TaskCreateDTO;
@@ -14,6 +15,7 @@ export default function TaskCreationForm({
   onSubmit,
 }: TaskCreationFormProps) {
   const { t } = useTranslation();
+  const [loading, setLoading] = useState(false);
 
   return (
     <div>
@@ -21,7 +23,14 @@ export default function TaskCreationForm({
         {t("taskCreation.title")}
       </h2>
 
-      <form onSubmit={onSubmit} className="space-y-6">
+      <form
+        onSubmit={(e) => {
+          setLoading(true);
+          onSubmit(e);
+          setLoading(false);
+        }}
+        className="space-y-6"
+      >
         <div>
           <label
             htmlFor="task-title"
@@ -136,7 +145,11 @@ export default function TaskCreationForm({
           hover:bg-blue-700 dark:hover:bg-blue-500 
           transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
-          {t("taskCreation.createButton")}
+          {loading ? (
+            <Spinner className="w-5 h-5 text-white" />
+          ) : (
+            t("taskCreation.createButton")
+          )}
         </button>
       </form>
     </div>
